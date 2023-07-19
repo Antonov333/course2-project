@@ -19,11 +19,6 @@ public class JavaController {
 
     JavaQuestionService javaQuestions = new JavaQuestionService(questionSet);
 
-    @GetMapping(path = "/get/{amount}")
-    public List<Question> get(@PathVariable int amount) {
-        return javaQuestions.getQuestions(amount);
-    }
-
     @GetMapping(path = "/java/load/{amount}")
     public Set<Question> load(@PathVariable int amount) {
         Set<Question> questions = JavaQuestionService.dummyQuestionGenerator("Java", amount);
