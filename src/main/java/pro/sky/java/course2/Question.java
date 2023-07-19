@@ -10,15 +10,36 @@ public class Question {
     }
 
     public Question(String problem, String answer) {
+        checkProblemAndAnswer(problem, answer);
         this.problem = problem;
         this.answer = answer;
     }
+
+    private static void checkProblemAndAnswer(String problem, String answer) {
+        if (problem.equals(answer)) {
+            throw new QuestionServiceException("problem and answer are same");
+        }
+    }
+
+    private void checkProblem(String problem) {
+        if (answer.equals(problem)) {
+            throw new QuestionServiceException("problem is same as answer");
+        }
+    }
+
+    private void checkAnswer(String answer) {
+        if (problem.equals(answer)) {
+            throw new QuestionServiceException("answer is same as problem");
+        }
+    }
+
 
     public String getProblem() {
         return problem;
     }
 
     public void setProblem(String problem) {
+        checkProblem(problem);
         this.problem = problem;
     }
 
@@ -27,6 +48,7 @@ public class Question {
     }
 
     public void setAnswer(String answer) {
+        checkAnswer(answer);
         this.answer = answer;
     }
 
