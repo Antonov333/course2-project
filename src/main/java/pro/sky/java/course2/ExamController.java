@@ -1,5 +1,7 @@
 package pro.sky.java.course2;
 
+import com.fasterxml.jackson.annotation.JacksonInject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +13,17 @@ import java.util.Set;
 @RequestMapping(path = "/exam/")
 public class ExamController {
 
-    private ExaminerService examinerService;
+
+    private JavaQuestionService javaQuestionService;
+
+    private final ExaminerServiceImpl examinerService;
+
+    public ExamController(ExaminerServiceImpl examinerService) {
+        this.examinerService = examinerService;
+    }
 
     @GetMapping(path = "/get/{amount}")
     Set<Question> getQuestions(@PathVariable int amount) {
-        examinerService.getQuestions(amount);
+        return examinerService.getQuestions(amount);
     }
 }

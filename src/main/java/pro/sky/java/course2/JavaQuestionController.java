@@ -2,11 +2,12 @@ package pro.sky.java.course2;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/exam/")
-public class JavaController {
+public class JavaQuestionController {
 /*
 1. Пользователь обращается к некому эндпоинту по адресу (”/exam/get/{amount}”)
 2. Пользователь получает ответ в виде списка случайных вопросов-ответов, количество которых равно amount
@@ -15,32 +16,48 @@ public class JavaController {
 (”/exam/java/(add/remove/find)”)
  */
 
-    Set<Question> questionSet = new HashSet<>();
+/* private final TrayService trayService;
 
-    JavaQuestionService javaQuestions = new JavaQuestionService(questionSet);
+    public TrayController(TrayService trayService) {
+        this.trayService = trayService;
+    } */
+
+    private final JavaQuestionService javaQuestionService;
+
+    public JavaQuestionController(JavaQuestionService javaQuestionService) {
+        this.javaQuestionService = javaQuestionService;
+    }
+
+    public Set<Question> getQuestionSet() {
+        Set<Question> questionSet = javaQuestionService.getQuestionSet();
+        return questionSet;
+    }
+
+    public JavaQuestionService getJavaQuestions() {
+        return javaQuestionService;
+    }
 
     @GetMapping(path = "/java/load/{amount}")
     public Set<Question> load(@PathVariable int amount) {
-        Set<Question> questions = JavaQuestionService.dummyQuestionGenerator("Java", amount);
-        javaQuestions.setQuestionSet(questions);
-        return questions;
+        javaQuestionService.addDummyQuestions(amount);
+        return javaQuestionService.getQuestionSet();
     }
 
     @GetMapping(path = "/java/add/")
     public Question add(@RequestParam(required = false, name = "problem") String problem,
                         @RequestParam(required = false, name = "answer") String answer) {
-        return javaQuestions.add(problem, answer);
+        return javaQuestionService.add(problem, answer);
     }
 
     @GetMapping(path = "/java/remove/")
     public Question remove(@RequestParam(required = false, name = "problem") String problem,
                            @RequestParam(required = false, name = "answer") String answer) {
-        return javaQuestions.removeQuestion(problem, answer);
+        return javaQuestionService.removeQuestion(problem, answer);
     }
 
     @GetMapping(path = "/java/")
     public Set<Question> getAllQuestions() {
-        return javaQuestions.getAll();
+        return javaQuestionService.getAll();
     }
 
 }

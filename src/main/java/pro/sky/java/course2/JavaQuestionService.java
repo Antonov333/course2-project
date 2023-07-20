@@ -1,17 +1,16 @@
 package pro.sky.java.course2;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.annotation.SessionScope;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
+@Scope(scopeName = "singleton")
 public class JavaQuestionService implements QuestionService {
 
-    private Set<Question> questionSet;
+    private Set<Question> questionSet = new HashSet<>();
 
     public JavaQuestionService(Set<Question> questionSet) {
         this.questionSet = questionSet;
@@ -28,12 +27,18 @@ public class JavaQuestionService implements QuestionService {
         this.questionSet = questionSet;
     }
 
+    @PostConstruct
+    public void init() {
+        System.out.println("JavaQuestionService init started");
+    }
+
     @Override
     public Question remove(Question question) {
         if (questionSet.remove(question)) {
             return question;
         } else {
-            throw new QuestionServiceException("Question missing");
+//            throw new QuestionServiceException("Question missing");
+            return new Question("No such question", "Sorry!");
         }
     }
 
@@ -107,18 +112,10 @@ public class JavaQuestionService implements QuestionService {
         return javaQuestions;
     }
 
-    ;
-
-    public static Set<Question> dummyQuestionGenerator(String topic, int numberOfDummyQuestions) {
-        Set<Question> dummyQuestions = new HashSet<>();
-        if (numberOfDummyQuestions <= 0) {
-            throw new QuestionServiceException(topic + ": numberOfDummyQuestions must be over zero");
+    public void addDummyQuestions(int amount) {
+        int oldSize = getAll().size();
+        for (int i = oldSize + 1; i <= oldSize + amount; i++) {
+            add(new Question("Java question #" + i, "Java answer #" + i));
         }
-        for (int i = 1; i <= numberOfDummyQuestions; i++) {
-            dummyQuestions.add(new Question(topic + " Question #" + i, topic + " Answer #" + i));
-        }
-        return dummyQuestions;
     }
-
-
 }

@@ -1,6 +1,8 @@
 package pro.sky.java.course2;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class Question {
     private String problem;
@@ -57,7 +59,7 @@ public class Question {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Question question = (Question) o;
-        return Objects.equals(problem, question.problem) && Objects.equals(answer, question.answer);
+        return Objects.equals(problem, question.problem);
     }
 
     @Override
@@ -72,4 +74,17 @@ public class Question {
                 ", answer='" + answer + '\'' +
                 '}';
     }
+
+    public static Set<Question> dummyQuestionGenerator(String topic, int numberOfDummyQuestions) {
+        Set<Question> dummyQuestions = new HashSet<>();
+        if (numberOfDummyQuestions <= 0) {
+            throw new QuestionServiceException(topic + ": numberOfDummyQuestions must be over zero");
+        }
+
+        for (int i = 1; i <= numberOfDummyQuestions; i++) {
+            dummyQuestions.add(new Question(topic + " Question #" + i, topic + " Answer #" + i));
+        }
+        return dummyQuestions;
+    }
+
 }

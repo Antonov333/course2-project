@@ -1,51 +1,50 @@
 package pro.sky.java.course2;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
+@Service
+@Scope(scopeName = "singleton")
 public class ExaminerServiceImpl implements ExaminerService {
 
-    private QuestionService questionService;
+    private final JavaQuestionService javaQuestionService;
 
-    public ExaminerServiceImpl(QuestionService questionService) {
-        this.questionService = questionService;
+    public ExaminerServiceImpl(JavaQuestionService javaQuestionService) {
+        this.javaQuestionService = javaQuestionService;
     }
 
-    public QuestionService getQuestionService() {
-        return questionService;
-    }
-
-    public void setQuestionService(QuestionService questionService) {
-        this.questionService = questionService;
+    public QuestionService getJavaQuestionService() {
+        return javaQuestionService;
     }
 
     @Override
     public Set<Question> getQuestions(int amount) {
 
-        int questionsQty = questionService.getAll().size();
+        int questionsQty = javaQuestionService.getAll().size();
 
         if (amount > questionsQty) {
             throw new QuestionServiceException("not enough questions");
         }
 
-        Collection<Question> questions = new HashSet<Question>();
+        Set<Question> questions = new HashSet<Question>();
 
         if (amount == questionsQty) {
-            questions = (Set<Question>) questionService.getAll();
-            return (Set<Question>) questions;
+            questions = javaQuestionService.getAll();
+            return questions;
         }
 
         for (int i = 1; i <= amount; i++) {
             Question nextQuestion = new Question();
             do {
-                nextQuestion = questionService.getRandomQuestion();
-            }
-            while (questions.contains(nextQuestion));
-            questions.add(questionService.getRandomQuestion());
+                nextQuestion = javaQuestionService.getRandomQuestion();
+            } while (questions.contains(nextQuestion));
+            questions.add(nextQuestion);
         }
 
-        return (Set<Question>) questions;
+        return questions;
     }
 }
