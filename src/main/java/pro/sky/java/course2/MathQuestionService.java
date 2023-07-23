@@ -8,15 +8,15 @@ import java.util.*;
 
 @Service
 @Scope(scopeName = "singleton")
-public class JavaQuestionService implements QuestionService {
+public class MathQuestionService implements QuestionService {
 
     private Set<Question> questionSet = new HashSet<>();
 
-    public JavaQuestionService(Set<Question> questionSet) {
+    public MathQuestionService(Set<Question> questionSet) {
         this.questionSet = questionSet;
     }
 
-    public JavaQuestionService() {
+    public MathQuestionService() {
     }
 
     public Set<Question> getQuestionSet() {
@@ -25,6 +25,11 @@ public class JavaQuestionService implements QuestionService {
 
     public void setQuestionSet(Set<Question> questionSet) {
         this.questionSet = questionSet;
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("MathQuestionService init started");
     }
 
     @Override
@@ -82,34 +87,10 @@ public class JavaQuestionService implements QuestionService {
         return remove(question);
     }
 
-    public Set<Question> loadJavaQuestions() {
-        Set javaQuestions = new HashSet<>( // https://www.javatpoint.com/corejava-interview-questions
-//                              https://www.softwaretestinghelp.com/core-java-interview-questions/
-                Arrays.asList(
-                        new Question("Q #1) What is JAVA?", "Java is a high-level programming language and is platform-independent.\n" +
-                                "Java is a collection of objects. It was developed by Sun Microsystems. There are a lot of applications, websites, and games that are developed using Java."),
-                        new Question("Q #2) What are the features of JAVA?", "Features of Java are as follows:\n" +
-                                "OOP concepts\n" +
-                                "Object-oriented\n" +
-                                "Inheritance\n" +
-                                "Encapsulation\n" +
-                                "Polymorphism\n" +
-                                "Abstraction\n" +
-                                "Platform independent: A single program works on different platforms without any modification.\n" +
-                                "High Performance: JIT (Just In Time compiler) enables high performance in Java. JIT converts the bytecode into machine language and then JVM starts the execution.\n" +
-                                "Multi-threaded: A flow of execution is known as a Thread. JVM creates a thread which is called the main thread. The user can create multiple threads by extending the thread class or by implementing the Runnable interface."),
-                        new Question(
-                                "Q",
-                                "A"
-                        )
-                ));
-        return javaQuestions;
-    }
-
     public void addDummyQuestions(int amount) {
         int oldSize = getAll().size();
         for (int i = oldSize + 1; i <= oldSize + amount; i++) {
-            add(new Question("Java question #" + i, "Java answer #" + i));
+            add(new Question("Math question #" + i, "Math answer #" + i));
         }
     }
 }
