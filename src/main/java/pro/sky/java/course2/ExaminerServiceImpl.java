@@ -1,5 +1,6 @@
 package pro.sky.java.course2;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -10,20 +11,20 @@ import java.util.Set;
 @Scope(scopeName = "singleton")
 public class ExaminerServiceImpl implements ExaminerService {
 
-    private final JavaQuestionService javaQuestionService;
+    private final QuestionService questionService;
 
-    public ExaminerServiceImpl(JavaQuestionService javaQuestionService) {
-        this.javaQuestionService = javaQuestionService;
+    public ExaminerServiceImpl(@Qualifier(value = "mathQuestionService") QuestionService questionService) {
+        this.questionService = questionService;
     }
 
-    public QuestionService getJavaQuestionService() {
-        return javaQuestionService;
+    public QuestionService getQuestionService() {
+        return questionService;
     }
 
     @Override
     public Set<Question> getQuestions(int amount) {
 
-        int questionsQty = javaQuestionService.getQtyOfNumbers();
+        int questionsQty = questionService.getAll().size();
 
         if (amount > questionsQty) {
             throw new QuestionServiceException("not enough questions");
@@ -32,13 +33,13 @@ public class ExaminerServiceImpl implements ExaminerService {
         Set<Question> questions = new HashSet<Question>();
 
         if (amount == questionsQty) {
-            questions = javaQuestionService.getAll();
+            questions = (Set<Question>) questionService.getAll();
             return questions;
         }
         Question nextQuestion = new Question();
         for (int i = 1; i <= amount; i++) {
             do {
-                nextQuestion = javaQuestionService.getRandomQuestion();
+                nextQuestion = questionService.getRandomQuestion();
             } while (questions.contains(nextQuestion));
             questions.add(nextQuestion);
         }

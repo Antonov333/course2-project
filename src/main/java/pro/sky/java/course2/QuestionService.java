@@ -1,5 +1,7 @@
 package pro.sky.java.course2;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import java.util.Collection;
 
 public interface QuestionService {

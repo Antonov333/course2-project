@@ -13,9 +13,6 @@ import java.util.Set;
 @RequestMapping(path = "/exam/")
 public class ExamController {
 
-
-    private JavaQuestionService javaQuestionService;
-
     private final ExaminerServiceImpl examinerService;
 
     public ExamController(ExaminerServiceImpl examinerService) {

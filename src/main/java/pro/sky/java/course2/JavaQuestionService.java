@@ -1,8 +1,11 @@
 package pro.sky.java.course2;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
@@ -11,9 +14,9 @@ public class JavaQuestionService implements QuestionService {
 
     private Set<Question> questionSet = new HashSet<>();
 
-    public JavaQuestionService(Set<Question> questionSet) {
-        this.questionSet = questionSet;
-    }
+//   public JavaQuestionService(Set<Question> questionSet) {
+//        this.questionSet = questionSet;
+//    }
 
     public JavaQuestionService() {
     }
@@ -113,5 +116,10 @@ public class JavaQuestionService implements QuestionService {
         for (int i = oldSize + 1; i <= oldSize + amount; i++) {
             add(new Question("Java question #" + i, "Java answer #" + i));
         }
+    }
+
+    @PostConstruct
+    private void loadQuestions() {
+        addDummyQuestions(15);
     }
 }

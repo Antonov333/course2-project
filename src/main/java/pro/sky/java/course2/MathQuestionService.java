@@ -27,11 +27,6 @@ public class MathQuestionService implements QuestionService {
         this.questionSet = questionSet;
     }
 
-    @PostConstruct
-    public void init() {
-        System.out.println("MathQuestionService init started");
-    }
-
     @Override
     public Question remove(Question question) {
         if (questionSet.remove(question)) {
@@ -92,5 +87,38 @@ public class MathQuestionService implements QuestionService {
         for (int i = oldSize + 1; i <= oldSize + amount; i++) {
             add(new Question("Math question #" + i, "Math answer #" + i));
         }
+    }
+
+    @PostConstruct
+    public void loadMathQuestion() {
+        add("First Fundamental Theorem Of Calculus",
+                "for a function f , an antiderivative or indefinite integral F may be obtained as the integral of f over an interval with a variable upper bound. This implies the existence of antiderivatives for continuous functions");
+
+        add("Second Fundamental Theorem Of Calculus",
+                "integral of a function f over a fixed interval is equal to the change of any antiderivative F between the ends of the interval.");
+
+        add("Fundamental Theorem Of Arithmetic",
+                "every integer greater than 1 can be represented uniquely as a product of prime numbers, up to the order of the factors");
+
+        add("Fundamental Theorem Of Algebra",
+                "every non-constant single-variable polynomial with complex coefficients has at least one complex root");
+
+        add("Pythagorean Theorem",
+                "a² + b² = c² where c is the hypotenuse while a and b are the legs of the triangle");
+
+        add("Isoperimetric Theorem A",
+                "Among all planar regions with a given perimeter p, the circle encloses the greatest area");
+
+        add("Fermat's Last Theorem",
+                "If an integer n is greater than 2, then the equation a^n + b^n = c^n has no solutions in non-zero integers a, b, and c");
+
+        add("Theorem (Law) Of Large Numbers (LlN)",
+                "the average of the results obtained from a large number of trials should be close to the expected value and tends to become closer to the expected value as more trials are performed");
+
+        add("Pythagorean Trigonometric Identity", "(sin x)^2 + (cos x)^2 = 1");
+
+        add("Fermat's Little Theorem",
+                "if p is a prime number, then for any integer a, the number {a^{p}-a} is an integer multiple of p");
+
     }
 }
