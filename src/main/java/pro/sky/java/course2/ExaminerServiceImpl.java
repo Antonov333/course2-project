@@ -3,7 +3,6 @@ package pro.sky.java.course2;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +23,7 @@ public class ExaminerServiceImpl implements ExaminerService {
     @Override
     public Set<Question> getQuestions(int amount) {
 
-        int questionsQty = javaQuestionService.getAll().size();
+        int questionsQty = javaQuestionService.getQtyOfNumbers();
 
         if (amount > questionsQty) {
             throw new QuestionServiceException("not enough questions");
@@ -36,15 +35,13 @@ public class ExaminerServiceImpl implements ExaminerService {
             questions = javaQuestionService.getAll();
             return questions;
         }
-
+        Question nextQuestion = new Question();
         for (int i = 1; i <= amount; i++) {
-            Question nextQuestion = new Question();
             do {
                 nextQuestion = javaQuestionService.getRandomQuestion();
             } while (questions.contains(nextQuestion));
             questions.add(nextQuestion);
         }
-
         return questions;
     }
 }

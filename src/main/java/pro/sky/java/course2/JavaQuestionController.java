@@ -2,7 +2,6 @@ package pro.sky.java.course2;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -52,7 +51,7 @@ public class JavaQuestionController {
     @GetMapping(path = "/java/remove/")
     public Question remove(@RequestParam(required = false, name = "problem") String problem,
                            @RequestParam(required = false, name = "answer") String answer) {
-        return javaQuestionService.removeQuestion(problem, answer);
+        return javaQuestionService.remove(problem, answer);
     }
 
     @GetMapping(path = "/java/")

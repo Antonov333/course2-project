@@ -75,16 +75,4 @@ public class Question {
                 '}';
     }
 
-    public static Set<Question> dummyQuestionGenerator(String topic, int numberOfDummyQuestions) {
-        Set<Question> dummyQuestions = new HashSet<>();
-        if (numberOfDummyQuestions <= 0) {
-            throw new QuestionServiceException(topic + ": numberOfDummyQuestions must be over zero");
-        }
-
-        for (int i = 1; i <= numberOfDummyQuestions; i++) {
-            dummyQuestions.add(new Question(topic + " Question #" + i, topic + " Answer #" + i));
-        }
-        return dummyQuestions;
-    }
-
 }

@@ -3,7 +3,6 @@ package pro.sky.java.course2;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
@@ -58,10 +57,6 @@ public class JavaQuestionService implements QuestionService {
         return random().nextInt(a, b);
     }
 
-    public List<Question> getQuestions(int amount) {
-        return null;
-    }
-
     @Override
     public Question add(String problem, String answer) {
         return add(new Question(problem, answer));
@@ -72,14 +67,21 @@ public class JavaQuestionService implements QuestionService {
         if (questionSet.add(question)) {
             return question;
         } else {
-            throw new RuntimeException("Question already added");
+            throw new QuestionServiceException("Question already added");
         }
     }
 
-    public Question removeQuestion(String problem,
-                                   String answer) {
+    public Question remove(String problem,
+                           String answer) {
         Question question = new Question(problem, answer);
         return remove(question);
+    }
+
+    public int getQtyOfNumbers() {
+        if (questionSet == null) {
+            return -1;
+        }
+        return questionSet.size();
     }
 
     public Set<Question> loadJavaQuestions() {
@@ -107,7 +109,7 @@ public class JavaQuestionService implements QuestionService {
     }
 
     public void addDummyQuestions(int amount) {
-        int oldSize = getAll().size();
+        int oldSize = getQtyOfNumbers();
         for (int i = oldSize + 1; i <= oldSize + amount; i++) {
             add(new Question("Java question #" + i, "Java answer #" + i));
         }
