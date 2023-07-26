@@ -14,9 +14,9 @@ public class JavaQuestionService implements QuestionService {
 
     private Set<Question> questionSet = new HashSet<>();
 
-//   public JavaQuestionService(Set<Question> questionSet) {
-//        this.questionSet = questionSet;
-//    }
+    public JavaQuestionService(Set<Question> questionSet) {
+        this.questionSet = questionSet;
+    }
 
     public JavaQuestionService() {
     }
