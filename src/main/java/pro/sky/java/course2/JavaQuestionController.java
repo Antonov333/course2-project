@@ -1,5 +1,6 @@
 package pro.sky.java.course2;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -15,42 +16,36 @@ public class JavaQuestionController {
 (”/exam/java/(add/remove/find)”)
  */
 
-    private final JavaQuestionService javaQuestionService;
+    private final QuestionService service;
 
-    public JavaQuestionController(JavaQuestionService javaQuestionService) {
-        this.javaQuestionService = javaQuestionService;
+    public JavaQuestionController(@Qualifier("javaQuestionService") QuestionService service) {
+        this.service = service;
     }
 
     public Set<Question> getQuestionSet() {
-        Set<Question> questionSet = javaQuestionService.getAll();
+        Set<Question> questionSet = (Set<Question>) service.getAll();
         return questionSet;
     }
 
-    public JavaQuestionService getJavaQuestions() {
-        return javaQuestionService;
-    }
-
-    @GetMapping(path = "/java/load/{amount}")
-    public Set<Question> load(@PathVariable int amount) {
-        javaQuestionService.addDummyQuestions(amount);
-        return (Set<Question>) javaQuestionService.getQuestionStorage().getAll();
+    public QuestionService getJavaQuestions() {
+        return service;
     }
 
     @GetMapping(path = "/java/add/")
     public Question add(@RequestParam(required = false, name = "problem") String problem,
                         @RequestParam(required = false, name = "answer") String answer) {
-        return javaQuestionService.add(problem, answer);
+        return service.add(problem, answer);
     }
 
     @GetMapping(path = "/java/remove/")
     public Question remove(@RequestParam(required = false, name = "problem") String problem,
                            @RequestParam(required = false, name = "answer") String answer) {
-        return javaQuestionService.remove(problem, answer);
+        return service.remove(problem, answer);
     }
 
     @GetMapping(path = "/java/")
     public Set<Question> getAllQuestions() {
-        return javaQuestionService.getAll();
+        return (Set<Question>) service.getAll();
     }
 
 }

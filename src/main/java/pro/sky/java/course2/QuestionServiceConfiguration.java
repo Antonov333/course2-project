@@ -7,8 +7,4 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class QuestionServiceConfiguration {
 
-    JavaQuestionRepository javaQuestionRepository() {
-        return new JavaQuestionRepository();
-    }
-
 }

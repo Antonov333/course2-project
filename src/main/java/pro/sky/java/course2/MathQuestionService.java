@@ -37,6 +37,11 @@ public class MathQuestionService implements QuestionService {
     }
 
     @Override
+    public Question remove(String problem, String answer) {
+        return remove(new Question(problem, answer));
+    }
+
+    @Override
     public Set<Question> getAll() {
         Set<Question> q = questionSet;
         return q;
@@ -76,12 +81,6 @@ public class MathQuestionService implements QuestionService {
         }
     }
 
-    public Question removeQuestion(String problem,
-                                   String answer) {
-        Question question = new Question(problem, answer);
-        return remove(question);
-    }
-
     public void addDummyQuestions(int amount) {
         int oldSize = getAll().size();
         for (int i = oldSize + 1; i <= oldSize + amount; i++) {
@@ -112,7 +111,7 @@ public class MathQuestionService implements QuestionService {
         add("Fermat's Last Theorem",
                 "If an integer n is greater than 2, then the equation a^n + b^n = c^n has no solutions in non-zero integers a, b, and c");
 
-        add("Theorem (Law) Of Large Numbers (LlN)",
+        add("Theorem (Law) Of Large Numbers (LLN)",
                 "the average of the results obtained from a large number of trials should be close to the expected value and tends to become closer to the expected value as more trials are performed");
 
         add("Pythagorean Trigonometric Identity", "(sin x)^2 + (cos x)^2 = 1");
