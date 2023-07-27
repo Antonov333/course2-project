@@ -7,7 +7,11 @@ import pro.sky.java.course2.question.Question;
 import pro.sky.java.course2.question.QuestionRepository;
 import pro.sky.java.course2.question.QuestionService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static pro.sky.java.course2.utils.Randoms.randomInt;
 
 @Service
 @Scope(scopeName = "singleton")
@@ -29,25 +33,16 @@ public class JavaQuestionService implements QuestionService {
     }
 
     @Override
-    public Set<Question> getAll() {
-        Set<Question> q = (Set<Question>) questionStorage.getAll();
+    public Collection<Question> getAll() {
+        Collection<Question> q = questionStorage.getAll();
         return q;
     }
 
     @Override
     public Question getRandomQuestion() {
         List<Question> list = new ArrayList<>((Collection) questionStorage.getAll());
-        Question question = new Question();
         int index = randomInt(0, list.size() - 1);
         return list.get(index);
-    }
-
-    private Random random() {
-        return new Random();
-    }
-
-    private int randomInt(int a, int b) {
-        return random().nextInt(a, b);
     }
 
     @Override
@@ -72,10 +67,4 @@ public class JavaQuestionService implements QuestionService {
         return questionStorage.getAll().size();
     }
 
-    public void addDummyQuestions(int amount) {
-        int oldSize = getQtyOfNumbers();
-        for (int i = oldSize + 1; i <= oldSize + amount; i++) {
-            add(new Question("Java question #" + i, "Java answer #" + i));
-        }
-    }
 }

@@ -8,84 +8,39 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.java.course2.javaquiz.JavaQuestionRepository;
 import pro.sky.java.course2.javaquiz.JavaQuestionService;
 import pro.sky.java.course2.question.Question;
+import pro.sky.java.course2.question.QuestionRepository;
 import pro.sky.java.course2.question.QuestionServiceException;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pro.sky.java.course2.randomData.randomInt;
-import static pro.sky.java.course2.randomData.randomPhrase;
+import static org.mockito.Mockito.when;
+import static pro.sky.java.course2.utils.Randoms.*;
 
 @ExtendWith(MockitoExtension.class)
 public class JavaQuestionServiceTest {
 
     @Mock
-    Question questionMock;
+    QuestionRepository questionRepositoryMock;
 
     @InjectMocks
     JavaQuestionService javaQuestionServiceMocked;
 
     @Test
-    public void JavaQuestionTest() {
-        JavaQuestionRepository questionSet = new JavaQuestionRepository();
+    public void JavaQuestionServiceTest() {
+
         Question question1 = new Question("Java Test Question #1", "Java Test Answer #1");
-        questionSet.add(question1);
-        JavaQuestionService javaQuestionService = new JavaQuestionService(questionSet);
-        assertEquals(questionSet, javaQuestionService.getQuestionStorage());
-    }
-
-    @Test
-    public void JavaQuestionNoArgsTest() {
-        Set<Question> questionSet = new HashSet<>();
-        Set<Question> emptyQuestionSet = new HashSet<>();
-        Question question1 = new Question("Java Test Question #1", "Java Test Answer #1");
-        questionSet.add(question1);
-        JavaQuestionService javaQuestionService = new JavaQuestionService(questionStorage);
-        assertEquals(emptyQuestionSet, javaQuestionService.getQuestionStorage());
-    }
-
-    @Test
-    public void removeTest() {
-        Question question1 = new Question("Java Test Question #1", "Java Test Answer #1");
-        Question question2 = new Question("Java Test Question #2", "Java Test Answer #2");
-        JavaQuestionRepository questionSet = new JavaQuestionRepository();
-        questionSet.add(question1);
-        questionSet.add(question2);
-        JavaQuestionService javaQuestionService = new JavaQuestionService(questionStorage);
-        javaQuestionService.setQuestionStorage(questionSet);
-        assertEquals(questionSet, javaQuestionService.getQuestionStorage());
-        assertEquals(question2, javaQuestionService.remove(question2));
-        assertThrows(QuestionServiceException.class, () -> javaQuestionService.remove(question2));
-    }
-
-
-    private static Set<Question> randomQuestionSetGenerator(int numberOfQuestions) {
-        Set<Question> dummyQuestions = new HashSet<>();
-        if (numberOfQuestions <= 0) {
-            throw new QuestionServiceException("numberOfDummyQuestions must be over zero");
-        }
-
-        Question question = new Question();
-
-        for (int i = 1; i <= numberOfQuestions; i++) {
-            question = new Question(randomPhrase(3, 5) + "?",
-                    randomPhrase(5, 15));
-            dummyQuestions.add(question);
-        }
-        return dummyQuestions;
+        JavaQuestionService javaQuestionService = new JavaQuestionService(questionRepositoryMock);
+        Collection<Question> testCollection = randomQuestionSetGenerator(randomInt(20, 30));
+        when(questionRepositoryMock.getAll()).thenReturn(testCollection);
+        assertEquals(testCollection, javaQuestionService.getAll());
     }
 
     @Test
     public void getAllTest() {
-        Set<Question> testQuestionSet = new HashSet<>();
-        testQuestionSet = randomQuestionSetGenerator(15);
-        JavaQuestionService javaQuestionService = new JavaQuestionService(questionStorage);
-        for (Question q : testQuestionSet
-        ) {
-            javaQuestionService.add(q);
-        }
-        assertEquals(testQuestionSet, javaQuestionService.getAll());
+        Collection<Question> testQuestionSet = randomQuestionSetGenerator(randomInt(40, 50));
+        when(questionRepositoryMock.getAll()).thenReturn(testQuestionSet);
+        assertEquals(testQuestionSet, javaQuestionServiceMocked.getAll());
     }
 
     @Test
@@ -98,42 +53,61 @@ public class JavaQuestionServiceTest {
     }
 
     @Test
+    public void addQuestionQuestionArgTest() {
+        JavaQuestionService testJavaQuestionService =
+                new JavaQuestionService(questionRepositoryMock);
+        String testProblem = randomPhrase(3, 5);
+        String testAnswer = randomPhrase(5, 15);
+        Question testQuestion = new Question(testProblem, testAnswer);
+        when(questionRepositoryMock.add(testQuestion)).thenReturn(testQuestion);
+        assertEquals(testQuestion, testJavaQuestionService.add(testQuestion));
+        when(questionRepositoryMock.add(testQuestion)).thenThrow(new QuestionServiceException("question already added"));
+        assertThrows(QuestionServiceException.class, () -> testJavaQuestionService.add(testQuestion));
+    }
+
+    @Test
+    public void addStringStringArgsTest() {
+        JavaQuestionService testJavaQuestionService = new JavaQuestionService(questionRepositoryMock);
+        String testProblem = randomPhrase(3, 5);
+        String testAnswer = randomPhrase(5, 15);
+        Question testQuestion = new Question(testProblem, testAnswer);
+        when(questionRepositoryMock.add(testQuestion)).thenReturn(testQuestion);
+        assertEquals(testQuestion, testJavaQuestionService.add(testProblem, testAnswer));
+        when(questionRepositoryMock.add(testQuestion)).thenThrow(new QuestionServiceException("question already added"));
+        assertThrows(QuestionServiceException.class, () -> testJavaQuestionService.add(testProblem, testAnswer));
+    }
+
+    @Test
     public void removeStringArgsTest() {
-        JavaQuestionService javaQuestionService =
-                new JavaQuestionService(
-                        new JavaQuestionRepository(randomQuestionSetGenerator(randomInt(10, 20))));
+        JavaQuestionService testJavaQuestionService = new JavaQuestionService(questionRepositoryMock);
         String testProblem = randomPhrase(3, 5);
         String testAnswer = randomPhrase(5, 15);
         Question testQuestion = new Question(testProblem, testAnswer);
-        assertEquals(testQuestion, javaQuestionService.add(testQuestion));
-        assertEquals(testQuestion, javaQuestionService.remove(testQuestion));
-        assertThrows(QuestionServiceException.class, () -> javaQuestionService.remove(testQuestion));
+        when(questionRepositoryMock.remove(testProblem, testAnswer)).thenReturn(testQuestion);
+        assertEquals(testQuestion, testJavaQuestionService.remove(testProblem, testAnswer));
+        when(questionRepositoryMock.remove(testProblem, testAnswer)).thenThrow(new QuestionServiceException("question already added"));
+        assertThrows(QuestionServiceException.class, () -> testJavaQuestionService.remove(testProblem, testAnswer));
     }
 
     @Test
-    public void addQuestionArgTest() {
-        JavaQuestionService javaQuestionService =
-                new JavaQuestionService(
-                        new JavaQuestionRepository(randomQuestionSetGenerator(randomInt(10, 20))));
+    public void removeQuestionArgTest() {
+        JavaQuestionService testJavaQuestionService = new JavaQuestionService(questionRepositoryMock);
         String testProblem = randomPhrase(3, 5);
         String testAnswer = randomPhrase(5, 15);
         Question testQuestion = new Question(testProblem, testAnswer);
-        assertEquals(testQuestion, javaQuestionService.add(testQuestion));
-        assertTrue(javaQuestionService.getAll().contains(testQuestion));
-        assertThrows(QuestionServiceException.class, () -> javaQuestionService.add(testQuestion));
+        when(questionRepositoryMock.remove(testQuestion)).thenReturn(testQuestion);
+        assertEquals(testQuestion, testJavaQuestionService.remove(testQuestion));
+        when(questionRepositoryMock.remove(testQuestion)).thenThrow(new QuestionServiceException("question already added"));
+        assertThrows(QuestionServiceException.class, () -> testJavaQuestionService.remove(testQuestion));
     }
 
     @Test
-    public void addStringArgsTest() {
-        JavaQuestionService javaQuestionService =
-                new JavaQuestionService(new JavaQuestionRepository(
-                        randomQuestionSetGenerator(randomInt(10, 20))));
-        String testProblem = randomPhrase(3, 5);
-        String testAnswer = randomPhrase(5, 15);
-        Question testQuestion = new Question(testProblem, testAnswer);
-        assertEquals(testQuestion, javaQuestionService.add(testProblem, testAnswer));
-        assertTrue(javaQuestionService.getAll().contains(testQuestion));
-        assertThrows(QuestionServiceException.class, () -> javaQuestionService.add(testProblem, testAnswer));
+    public void getQtyOfNumbersTest() {
+        JavaQuestionService testJavaQuestionService = new JavaQuestionService(questionRepositoryMock);
+        Collection<Question> testQuestionCollection = randomQuestionSet(randomInt(10, 100));
+        int testSize = testQuestionCollection.size();
+        when(questionRepositoryMock.getAll()).thenReturn(testQuestionCollection);
+        assertEquals(testSize, testJavaQuestionService.getQtyOfNumbers());
     }
 
 

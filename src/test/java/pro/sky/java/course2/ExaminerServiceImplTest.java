@@ -3,13 +3,13 @@ package pro.sky.java.course2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.java.course2.exam.ExaminerServiceImpl;
-import pro.sky.java.course2.javaquiz.JavaQuestionService;
+import pro.sky.java.course2.question.QuestionService;
 import pro.sky.java.course2.question.QuestionServiceException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -17,13 +17,16 @@ public class ExaminerServiceImplTest {
 
 
     @Mock
-    JavaQuestionService javaQuestionServiceMock;
+    QuestionService javaQuestionServiceMock;
+
+    @InjectMocks
+    ExaminerServiceImpl examinerServiceImpl;
 
     @Test
     public void getQuestionsTest() {
-        ExaminerServiceImpl examinerServiceImpl = new ExaminerServiceImpl(javaQuestionServiceMock, javaQuestionService, mathQuestionService);
+        ExaminerServiceImpl examinerServiceImpl = new ExaminerServiceImpl(javaQuestionServiceMock, javaQuestionServiceMock);
         int questionQtyForMock = 3;
-        when(javaQuestionServiceMock.getQtyOfNumbers()).thenReturn(questionQtyForMock);
+        when(javaQuestionServiceMock.getAll().size()).thenReturn(questionQtyForMock);
         Assertions.assertThrows(QuestionServiceException.class, () -> examinerServiceImpl.getQuestions(questionQtyForMock + 1));
 
         /*HashSet<Question> testQuestionSetFull =

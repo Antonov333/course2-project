@@ -19,10 +19,10 @@ public class JavaQuestionRepository implements QuestionRepository {
 
     private Set<Question> questionCollection = new HashSet<>();
 
-    JavaQuestionRepository() {
+    public JavaQuestionRepository() {
     }
 
-    JavaQuestionRepository(Collection<Question> questionCollection) {
+    public JavaQuestionRepository(Collection<Question> questionCollection) {
         this.questionCollection = (Set<Question>) questionCollection;
     }
 
