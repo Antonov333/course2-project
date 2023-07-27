@@ -90,7 +90,12 @@ public class MathQuestionRepository implements QuestionRepository {
 
         add("Fermat's Little Theorem",
                 "if p is a prime number, then for any integer a, the number {a^{p}-a} is an integer multiple of p");
-
     }
 
+    @Override
+    public String toString() {
+        return "MathQuestionRepository{" +
+                "questionCollection=" + questionCollection +
+                '}';
+    }
 }

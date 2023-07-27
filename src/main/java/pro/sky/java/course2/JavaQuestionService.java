@@ -1,5 +1,6 @@
 package pro.sky.java.course2;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +10,9 @@ import java.util.*;
 @Scope(scopeName = "singleton")
 public class JavaQuestionService implements QuestionService {
 
-    private final JavaQuestionRepository questionStorage;
+    private final QuestionRepository questionStorage;
 
-    public JavaQuestionService(JavaQuestionRepository questionStorage) {
+    public JavaQuestionService(@Qualifier("javaQuestionRepository") QuestionRepository questionStorage) {
         this.questionStorage = questionStorage;
     }
 

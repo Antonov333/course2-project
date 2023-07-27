@@ -108,7 +108,6 @@ public class JavaQuestionRepository implements QuestionRepository {
                 "Same method name " +
                 "Different argument types " +
                 "There may be different return types");
-        System.out.println("questionCollection = " + questionCollection);
     }
 
     @Override

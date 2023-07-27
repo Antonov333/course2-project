@@ -6,13 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static pro.sky.java.course2.randomData.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ExaminerServiceImplTest {
@@ -23,7 +18,7 @@ public class ExaminerServiceImplTest {
 
     @Test
     public void getQuestionsTest() {
-        ExaminerServiceImpl examinerServiceImpl = new ExaminerServiceImpl(javaQuestionServiceMock);
+        ExaminerServiceImpl examinerServiceImpl = new ExaminerServiceImpl(javaQuestionServiceMock, javaQuestionService, mathQuestionService);
         int questionQtyForMock = 3;
         when(javaQuestionServiceMock.getQtyOfNumbers()).thenReturn(questionQtyForMock);
         Assertions.assertThrows(QuestionServiceException.class, () -> examinerServiceImpl.getQuestions(questionQtyForMock + 1));
