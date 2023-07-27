@@ -1,8 +1,6 @@
 package pro.sky.java.course2;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class Question {
     private String problem;

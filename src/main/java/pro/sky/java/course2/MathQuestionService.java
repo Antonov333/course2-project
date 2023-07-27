@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import static pro.sky.java.course2.Randoms.randomInt;
 
 @Service
 @Scope(scopeName = "singleton")
@@ -42,18 +46,6 @@ public class MathQuestionService implements QuestionService {
         Question question = new Question();
         int index = randomInt(0, list.size() - 1);
         return list.get(index);
-    }
-
-    private Random random() {
-        return new Random();
-    }
-
-    private int randomInt(int a, int b) {
-        return random().nextInt(a, b);
-    }
-
-    public List<Question> getQuestions(int amount) {
-        return null;
     }
 
     @Override
