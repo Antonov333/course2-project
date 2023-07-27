@@ -1,17 +1,26 @@
 package pro.sky.java.course2;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 @Service
+@Repository
+@Scope(scopeName = "singleton")
 public class JavaQuestionRepository implements QuestionRepository {
 
-    private final Collection<Question> questionCollection = new HashSet<>();
+    private Set<Question> questionCollection = new HashSet<>();
 
     JavaQuestionRepository() {
+    }
+
+    JavaQuestionRepository(Collection<Question> questionCollection) {
+        this.questionCollection = (Set<Question>) questionCollection;
     }
 
     @Override
@@ -57,7 +66,7 @@ public class JavaQuestionRepository implements QuestionRepository {
     }
 
     @PostConstruct
-    public void loadJavaQuestions() {
+    public void init() {
         add("What is Autoboxing and Unboxing?",
                 "Autoboxing is the automatic conversion that the Java compiler makes between the primitive types and their corresponding object wrapper classes. For example, converting an int to an Integer, a double to a Double, and so on. If the conversion goes the other way, this is called unboxing");
         add("What class in Java is parent of Object class?",
@@ -69,17 +78,17 @@ public class JavaQuestionRepository implements QuestionRepository {
         add("How does Java enable high performance?",
                 "Java uses Just In Time compiler to enable high performance. It is used to convert the instructions into bytecodes");
         add("What do you mean by Constructor?",
-                "Constructors can be explained in detail with enlisted points:\n" +
-                        "When a new object is created in a program a constructor gets invoked corresponding to the class.\n" +
-                        "The constructor is a method which has the same name as the class name.\n" +
-                        "If a user doesn’t create a constructor implicitly a default constructor will be created.\n" +
-                        "The constructor can be overloaded.\n" +
+                "Constructors can be explained in detail with enlisted points: " +
+                        "When a new object is created in a program a constructor gets invoked corresponding to the class. " +
+                        "The constructor is a method which has the same name as the class name. " +
+                        "If a user doesn’t create a constructor implicitly a default constructor will be created. " +
+                        "The constructor can be overloaded. " +
                         "If the user created a constructor with a parameter then he should create another constructor explicitly without a parameter"
         );
 
         add("What is a Class?",
-                "All Java codes are defined in a Class. It has variables and methods.\n" +
-                        "Variables are attributes which define the state of a class.\n" +
+                "All Java codes are defined in a Class. It has variables and methods. " +
+                        "Variables are attributes which define the state of a class. " +
                         "Methods is a place where the exact business logic has to be done. It contains a set of statements (or) instructions to satisfy the particular requirement.");
         add("What is meant by the Local variable and the Instance variable?",
                 "Local variables are defined in the method and scope of the variables that exist inside the method itself. Instance variable is defined inside the class and outside the method and the scope of the variables exists throughout the class.");
@@ -87,19 +96,25 @@ public class JavaQuestionRepository implements QuestionRepository {
                 "An instance of a class is called an object. The object has state and behavior. Whenever the JVM reads the “new()” keyword then it will create an instance of that class");
         add("What is Inheritance?", "Inheritance means one class can extend to another class. So that the codes can be reused from one class to another class. The existing class is known as the Super class whereas the derived class is known as a sub class");
         add("What is Encapsulation?",
-                "Purpose of Encapsulation:\n" + "Protects the code from others.\n" + "Code maintainability");
+                "Purpose of Encapsulation: " + "Protects the code from others. " + "Code maintainability");
         add("What is meant by Method Overriding?",
-                "Method overriding happens if the sub-class method satisfies the below conditions with the Super-class method:\n" +
-                        "Method name should be the same\n" +
-                        "The argument should be the same\n" +
-                        "Return type should also be the same\n" +
+                "Method overriding happens if the sub-class method satisfies the below conditions with the Super-class method: " +
+                        "Method name should be the same " +
+                        "The argument should be the same " +
+                        "Return type should also be the same " +
                         "The key benefit of overriding is that the Sub-class can provide some specific information about that sub-class type than the super-class");
-        add("What is meant by Overloading?", "Method overloading happens for different classes or within the same class.\n" +
-                "For method overloading, sub-class method should satisfy the below conditions with the Super-class method (or) methods in the same class itself:\n" +
-                "Same method name\n" +
-                "Different argument types\n" +
+        add("What is meant by Overloading?", "Method overloading happens for different classes or within the same class. " +
+                "For method overloading, sub-class method should satisfy the below conditions with the Super-class method (or) methods in the same class itself: " +
+                "Same method name " +
+                "Different argument types " +
                 "There may be different return types");
-
+        System.out.println("questionCollection = " + questionCollection);
     }
 
+    @Override
+    public String toString() {
+        return "JavaQuestionRepository{" +
+                "questionCollection=" + questionCollection +
+                '}';
+    }
 }

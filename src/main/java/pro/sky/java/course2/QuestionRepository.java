@@ -15,5 +15,4 @@ public interface QuestionRepository {
     Question remove(String problem, String answer);
 
     Collection<Question> getAll();
-
 }

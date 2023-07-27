@@ -15,12 +15,6 @@ public class JavaQuestionController {
 (”/exam/java/(add/remove/find)”)
  */
 
-/* private final TrayService trayService;
-
-    public TrayController(TrayService trayService) {
-        this.trayService = trayService;
-    } */
-
     private final JavaQuestionService javaQuestionService;
 
     public JavaQuestionController(JavaQuestionService javaQuestionService) {
@@ -28,7 +22,7 @@ public class JavaQuestionController {
     }
 
     public Set<Question> getQuestionSet() {
-        Set<Question> questionSet = javaQuestionService.getQuestionSet();
+        Set<Question> questionSet = javaQuestionService.getAll();
         return questionSet;
     }
 
@@ -39,7 +33,7 @@ public class JavaQuestionController {
     @GetMapping(path = "/java/load/{amount}")
     public Set<Question> load(@PathVariable int amount) {
         javaQuestionService.addDummyQuestions(amount);
-        return javaQuestionService.getQuestionSet();
+        return (Set<Question>) javaQuestionService.getQuestionStorage().getAll();
     }
 
     @GetMapping(path = "/java/add/")
