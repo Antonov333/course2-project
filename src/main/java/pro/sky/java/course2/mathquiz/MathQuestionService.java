@@ -1,14 +1,18 @@
-package pro.sky.java.course2;
+package pro.sky.java.course2.mathquiz;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import pro.sky.java.course2.question.Question;
+import pro.sky.java.course2.question.QuestionRepository;
+import pro.sky.java.course2.question.QuestionService;
+import pro.sky.java.course2.question.QuestionServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static pro.sky.java.course2.Randoms.randomInt;
+import static pro.sky.java.course2.utils.Randoms.randomInt;
 
 @Service
 @Scope(scopeName = "singleton")

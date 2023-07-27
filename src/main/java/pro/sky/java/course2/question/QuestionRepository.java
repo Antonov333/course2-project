@@ -1,19 +1,18 @@
-package pro.sky.java.course2;
+package pro.sky.java.course2.question;
 
 import java.util.Collection;
 
-public interface QuestionService {
+public interface QuestionRepository {
 
-    Question add(String problem, String answer);
+    // QuestionRepository с методами add, remove и getAll
 
     Question add(Question question);
+
+    Question add(String problem, String answer);
 
     Question remove(Question question);
 
     Question remove(String problem, String answer);
 
     Collection<Question> getAll();
-
-    Question getRandomQuestion();
-
 }

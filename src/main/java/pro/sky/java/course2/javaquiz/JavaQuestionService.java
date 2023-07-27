@@ -1,8 +1,11 @@
-package pro.sky.java.course2;
+package pro.sky.java.course2.javaquiz;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import pro.sky.java.course2.question.Question;
+import pro.sky.java.course2.question.QuestionRepository;
+import pro.sky.java.course2.question.QuestionService;
 
 import java.util.*;
 

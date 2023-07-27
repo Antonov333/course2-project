@@ -1,9 +1,11 @@
-package pro.sky.java.course2;
+package pro.sky.java.course2.exam;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pro.sky.java.course2.question.Question;
 
 import java.util.Set;
 
@@ -11,14 +13,14 @@ import java.util.Set;
 @RequestMapping(path = "/exam/")
 public class ExamController {
 
-    private final ExaminerServiceImpl examinerService;
+    private final ExaminerService examinerService;
 
-    public ExamController(ExaminerServiceImpl examinerService) {
+    public ExamController(@Qualifier("examinerServiceImplNext") ExaminerService examinerService) {
         this.examinerService = examinerService;
     }
 
     @GetMapping(path = "/get/{amount}")
     Set<Question> getQuestions(@PathVariable int amount) {
-        return examinerService.getQuestions(amount);
+        return (Set<Question>) examinerService.getQuestions(amount);
     }
 }

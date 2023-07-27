@@ -1,6 +1,7 @@
 package pro.sky.java.course2;
 
 import com.thedeanda.lorem.LoremIpsum;
+import pro.sky.java.course2.question.Question;
 
 import java.util.HashSet;
 import java.util.Random;

@@ -1,6 +1,9 @@
-package pro.sky.java.course2;
+package pro.sky.java.course2.mathquiz;
 
 import org.springframework.stereotype.Service;
+import pro.sky.java.course2.question.Question;
+import pro.sky.java.course2.question.QuestionRepository;
+import pro.sky.java.course2.question.QuestionServiceException;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
@@ -23,10 +26,9 @@ public class MathQuestionRepository implements QuestionRepository {
     @Override
     public Question add(Question question) {
         checkQuestion(question);
-        throw new MathRepositoryException("Math Questions are not available at the moment");
 
-//        questionCollection.add(question);
-//        return question;
+        questionCollection.add(question);
+        return question;
     }
 
     private void checkQuestion(Question question) {
@@ -53,17 +55,15 @@ public class MathQuestionRepository implements QuestionRepository {
 
     @Override
     public Question remove(String problem, String answer) {
-        throw new MathRepositoryException("Math Questions are not available at the moment");
- /*       Question question = new Question(problem, answer);
-        return remove(question); */
+        Question question = new Question(problem, answer);
+        return remove(question);
     }
 
     @Override
     public Collection<Question> getAll() {
-        throw new MathRepositoryException("Math Questions are not available at the moment");
-       /*( Collection<Question> questions = new HashSet<>();
+        Collection<Question> questions = new HashSet<>();
         questions = questionCollection;
-        return questions; */
+        return questions;
     }
 
     @PostConstruct

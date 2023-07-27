@@ -1,4 +1,4 @@
-package pro.sky.java.course2;
+package pro.sky.java.course2.utils;
 
 import java.util.Random;
 

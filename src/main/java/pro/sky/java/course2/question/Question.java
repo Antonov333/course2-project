@@ -1,4 +1,4 @@
-package pro.sky.java.course2;
+package pro.sky.java.course2.question;
 
 import java.util.Objects;
 
