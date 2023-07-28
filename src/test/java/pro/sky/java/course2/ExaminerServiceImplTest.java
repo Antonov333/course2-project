@@ -7,10 +7,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.java.course2.exam.ExaminerServiceImpl;
+import pro.sky.java.course2.question.Question;
 import pro.sky.java.course2.question.QuestionService;
 import pro.sky.java.course2.question.QuestionServiceException;
 
+import java.util.Collection;
+import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+import static pro.sky.java.course2.utils.Randoms.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ExaminerServiceImplTest {
@@ -19,43 +26,55 @@ public class ExaminerServiceImplTest {
     @Mock
     QuestionService javaQuestionServiceMock;
 
+    @Mock
+    QuestionService mathQuestionServiceMock;
+
     @InjectMocks
-    ExaminerServiceImpl examinerServiceImpl;
+    ExaminerServiceImpl examinerServiceImplMocked;
 
     @Test
     public void getQuestionsTest() {
-        ExaminerServiceImpl examinerServiceImpl = new ExaminerServiceImpl(javaQuestionServiceMock, javaQuestionServiceMock);
-        int questionQtyForMock = 3;
-        when(javaQuestionServiceMock.getAll().size()).thenReturn(questionQtyForMock);
-        Assertions.assertThrows(QuestionServiceException.class, () -> examinerServiceImpl.getQuestions(questionQtyForMock + 1));
+        ExaminerServiceImpl examinerServiceImplMocked = new ExaminerServiceImpl(javaQuestionServiceMock, mathQuestionServiceMock);
+        int amount = randomInt(3, 7);
+        Collection<Question> testJavaQuestionCollection = randomQuestionSet(randomInt(amount + 1, amount * 20));
+        Collection<Question> testMathQuestionCollection = randomQuestionSet(randomInt(amount + 1, amount * 20));
+        when(javaQuestionServiceMock.getAll()).thenReturn(testJavaQuestionCollection);
+        when(mathQuestionServiceMock.getAll()).thenReturn(testMathQuestionCollection);
+        Assertions.assertThrows(QuestionServiceException.class, () -> examinerServiceImplMocked.getQuestions(
+                testJavaQuestionCollection.size() + testMathQuestionCollection.size() + 1));
 
-        /*HashSet<Question> testQuestionSetFull =
-                randomQuestionSet(questionQtyForMock * randomInt(20, 30));
+       /*GetTestQuestionAndKeepInStorage testCollectionMaker = new GetTestQuestionAndKeepInStorage();
 
-        Set<Question> questionsForMock = randomQuestionSet(questionQtyForMock);
+        testCollectionMaker.getNewDummy();
+        testCollectionMaker.getNewDummy();
+        testCollectionMaker.getNewDummy();
 
-        testQuestionSetFull.addAll(questionsForMock);
-
-        System.out.println("questionsForMock = " + questionsForMock);
-
-        System.out.println("testQuestionSetFull = " + testQuestionSetFull);
-
-        Iterator<Question> questionIterator = questionsForMock.iterator();
-
-     when(javaQuestionServiceMock.getAll()).thenReturn(testQuestionSetFull);
-        when(javaQuestionServiceMock.getRandomQuestion()).thenReturn(questionIterator.next());
-        when(javaQuestionServiceMock.getQtyOfNumbers()).thenReturn(testQuestionSetFull.size());
-
-        Set<Question> actualQuestionSet =  examinerServiceImpl.getQuestions(questionQtyForMock) ;
-
-        System.out.println("questionQtyForMock = " + questionQtyForMock);
-        System.out.println("questionsForMock = " + questionsForMock);
-
-        System.out.println(actualQuestionSet);
-
-        assertEquals(questionsForMock,actualQuestionSet); */
-
+        when(javaQuestionServiceMock.getRandomQuestion()).thenAnswer(() -> testCollectionMaker.getNewDummy());
+        when(mathQuestionServiceMock.getRandomQuestion()).thenReturn(testCollectionMaker.getNewDummy());
+        assertEquals(testCollectionMaker.getAll(),examinerServiceImplMocked.getQuestions(amount));
+        
+        */
     }
 
+    class GetTestQuestionAndKeepInStorage {
+        private final Collection<Question> questionCollection = new HashSet<>();
+        private int dummyQuestionCount = 0;
+
+        public GetTestQuestionAndKeepInStorage() {
+        }
+
+        Question getNewDummy() {
+            dummyQuestionCount++;
+            Question question = new Question("Dummy Question #" + dummyQuestionCount,
+                    "Dummy Answer #" + dummyQuestionCount);
+            questionCollection.add(question);
+            return question;
+        }
+
+        Collection<Question> getAll() {
+            return questionCollection;
+        }
+
+    }
 
 }

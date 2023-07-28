@@ -7,6 +7,7 @@ import pro.sky.java.course2.question.Question;
 import pro.sky.java.course2.question.QuestionService;
 import pro.sky.java.course2.question.QuestionServiceException;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,8 +27,7 @@ public class ExaminerServiceImpl implements ExaminerService {
     }
 
     @Override
-    public Set<Question> getQuestions(int amount) {
-
+    public Collection<Question> getQuestions(int amount) {
         int javaQuestionsQty = javaQuestionService.getAll().size();
         int mathQuestionsQty = mathQuestionService.getAll().size();
 
@@ -39,15 +39,23 @@ public class ExaminerServiceImpl implements ExaminerService {
             throw new QuestionServiceException("not enough Math questions");
         }
 
+        if (amount == javaQuestionsQty + mathQuestionsQty) {
+            Collection<Question> q = javaQuestionService.getAll();
+            q.addAll(mathQuestionService.getAll());
+            return q;
+        }
+
         Set<Question> questions = new HashSet<Question>();
 
-        Question nextQuestion = new Question();
+        Question nextQuestion;
+
         int javaQuizAmount = randomInt(0, amount);
 
         int i = 1;
         for (; i <= javaQuizAmount; i++) {
             do {
                 nextQuestion = javaQuestionService.getRandomQuestion();
+                questions.add(nextQuestion);
             } while (questions.contains(nextQuestion));
             questions.add(nextQuestion);
         }
@@ -61,5 +69,4 @@ public class ExaminerServiceImpl implements ExaminerService {
 
         return questions;
     }
-
 }
