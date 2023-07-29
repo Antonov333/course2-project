@@ -52,7 +52,7 @@ public class ExaminerServiceImplTest {
         when(javaQuestionServiceMock.getRandomQuestion()).thenAnswer(() -> testCollectionMaker.getNewDummy());
         when(mathQuestionServiceMock.getRandomQuestion()).thenReturn(testCollectionMaker.getNewDummy());
         assertEquals(testCollectionMaker.getAll(),examinerServiceImplMocked.getQuestions(amount));
-        
+
         */
     }
 

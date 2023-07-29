@@ -31,14 +31,14 @@ public class JavaQuestionServiceTest {
 
         Question question1 = new Question("Java Test Question #1", "Java Test Answer #1");
         JavaQuestionService javaQuestionService = new JavaQuestionService(questionRepositoryMock);
-        Collection<Question> testCollection = randomQuestionSetGenerator(randomInt(20, 30));
+        Collection<Question> testCollection = randomQuestionSet(randomInt(20, 30));
         when(questionRepositoryMock.getAll()).thenReturn(testCollection);
         assertEquals(testCollection, javaQuestionService.getAll());
     }
 
     @Test
     public void getAllTest() {
-        Collection<Question> testQuestionSet = randomQuestionSetGenerator(randomInt(40, 50));
+        Collection<Question> testQuestionSet = randomQuestionSet(randomInt(40, 50));
         when(questionRepositoryMock.getAll()).thenReturn(testQuestionSet);
         assertEquals(testQuestionSet, javaQuestionServiceMocked.getAll());
     }
@@ -47,7 +47,7 @@ public class JavaQuestionServiceTest {
     public void getRandomQuestionTest() {
         JavaQuestionService javaQuestionService =
                 new JavaQuestionService(
-                        new JavaQuestionRepository(randomQuestionSetGenerator(randomInt(10, 20))));
+                        new JavaQuestionRepository(randomQuestionSet(randomInt(10, 20))));
         Question question = javaQuestionService.getRandomQuestion();
         assertTrue(javaQuestionService.getAll().contains(question));
     }

@@ -16,10 +16,10 @@ public class MathQuestionRepository implements QuestionRepository {
 
     private Collection<Question> questionCollection = new HashSet<>();
 
-    MathQuestionRepository() {
+    public MathQuestionRepository() {
     }
 
-    MathQuestionRepository(Collection<Question> questionCollection) {
+    public MathQuestionRepository(Collection<Question> questionCollection) {
         this.questionCollection = questionCollection;
     }
 

@@ -21,28 +21,20 @@ public class Randoms {
     public static HashSet<Question> randomQuestionSet(int numberOfQuestions) {
         HashSet<Question> questionSet = new HashSet<>(numberOfQuestions);
         for (int i = 0; i < numberOfQuestions; i++) {
-            questionSet.add(new Question(randomPhrase(3, 5), randomPhrase(5, 15)));
+            questionSet.add(randomQuestion());
+        }
+        return questionSet;
+    }
+
+    public static HashSet<Question> dummyQuestionSet(int numberOfQuestions, String topic) {
+        HashSet<Question> questionSet = new HashSet<>(numberOfQuestions);
+        for (int i = 1; i <= numberOfQuestions; i++) {
+            questionSet.add(new Question(topic + " Dummy Question #" + i, "Dummy Answer #" + i));
         }
         return questionSet;
     }
 
     public static Question randomQuestion() {
         return new Question(randomPhrase(3, 5) + "?", randomPhrase(5, 15));
-    }
-
-    public static Set<Question> randomQuestionSetGenerator(int numberOfQuestions) {
-        Set<Question> dummyQuestions = new HashSet<>();
-        if (numberOfQuestions <= 0) {
-            throw new QuestionServiceException("numberOfDummyQuestions must be over zero");
-        }
-
-        Question question = new Question();
-
-        for (int i = 1; i <= numberOfQuestions; i++) {
-            question = new Question(randomPhrase(3, 5) + "?",
-                    randomPhrase(5, 15));
-            dummyQuestions.add(question);
-        }
-        return dummyQuestions;
     }
 }
